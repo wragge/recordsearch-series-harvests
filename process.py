@@ -24,12 +24,15 @@ def export_csv(series_id):
             'digitised_status',
             'digitised_pages'
         ])
-        for item in db.items.find({'series': series_id}):
+        items = db.items.find({'series': series_id})
+        # print len(list(items))
+        for index, item in enumerate(items):
             csv_writer.writerow([
+                index,
                 item['identifier'],
                 item['series'],
                 item['control_symbol'],
-                item['title'],
+                item['title'].replace('\n', ' ').replace('\r', '').replace('  ', ' '),
                 item['contents_dates']['start_date'],
                 item['contents_dates']['end_date'],
                 item['access_status'],
